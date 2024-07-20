@@ -153,6 +153,38 @@ class CourseController {
       });
     }
   }
+
+  // --------------------------------
+  // ------ | Exercício 05 | --------
+  // --------------------------------
+
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+
+      const course = await Course.findByPk(id);
+
+      if (!course) {
+        return res.status(404).json({
+          message: 'Curso não encontrado',
+        });
+      }
+
+      await course.destroy();
+
+      // O status code 204 (No Content) significa que a requisição foi bem-sucedida,
+      // mas não há conteúdo a ser enviado na resposta. De acordo com a especificação HTTP,
+      // uma resposta com status 204 não deve incluir um corpo.
+      //https://datatracker.ietf.org/doc/html/rfc7231#section-6.3.5
+      // https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/204
+
+      res.status(204).send();
+    } catch (error) {
+      res.status(500).json({
+        message: 'Ocorreu um erro interno ao deletar o curso',
+      });
+    }
+  }
 } // class end
 
 module.exports = new CourseController();
