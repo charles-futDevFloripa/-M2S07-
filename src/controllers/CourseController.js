@@ -1,6 +1,9 @@
 const Course = require('../models/Course');
 
 class CourseController {
+  // --------------------------------
+  // --------| Exercício 01 |--------
+  // --------------------------------
   async create(req, res) {
     try {
       const data = req.body;
@@ -25,6 +28,21 @@ class CourseController {
       });
     }
   }
-}
+
+  // --------------------------------
+  // --------| Exercício 02 |--------
+  // --------------------------------
+
+  async listAll(req, res) {
+    try {
+      const courses = await Course.findAll();
+      res.json(courses);
+    } catch (error) {
+      res.status(500).json({
+        message: 'Ocorreu um erro interno ao buscar os cursos',
+      });
+    }
+  }
+} // class end
 
 module.exports = new CourseController();
