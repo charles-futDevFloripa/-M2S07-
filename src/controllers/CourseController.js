@@ -79,7 +79,7 @@ class CourseController {
   }
 
   // --------------------------------
-  // ------| Extra using LIKE |------
+  // -----| Extra usando LIKE |------
   // --------------------------------
 
   async searchWithLike(req, res) {
@@ -109,6 +109,47 @@ class CourseController {
     } catch (error) {
       res.status(500).json({
         message: 'Ocorreu um erro interno ao listar os cursos',
+      });
+    }
+  }
+
+  // --------------------------------
+  // ------ | Exercício 04 | --------
+  // --------------------------------
+
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      const { name, duration } = req.body;
+
+      if (!name) {
+        return res.status(400).json({
+          message: 'O nome do curso deve ser informado',
+        });
+      }
+
+      if (!duration) {
+        return res.status(400).json({
+          message: 'A duração do curso deve ser informada',
+        });
+      }
+
+      const course = await Course.findByPk(id);
+
+      if (!course) {
+        return res.status(404).json({
+          message: 'Curso não encontrado',
+        });
+      }
+
+      course.name = name;
+      course.duration = duration;
+      await course.save();
+
+      res.status(200).json(course);
+    } catch (error) {
+      res.status(500).json({
+        message: 'Ocorreu um erro interno ao atualizar o curso',
       });
     }
   }
